@@ -7,10 +7,15 @@ import {
 import MapView from 'react-native-maps';
 import Style from './Style';
 
+let id = 0;
+
 class Mappyr extends Component {
   state = {
-    initialPosition: 'unknown',
-    lastPosition: 'unknown',
+    region: {
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
+    },
+    markers: [],
   };
 
   watchID: ?number = null;
@@ -34,6 +39,18 @@ class Mappyr extends Component {
   //   navigator.geolocation.clearWatch(this.watchID);
   // }
 
+  onMapPress(e) {
+    this.setState({
+      markers: [
+        ...this.state.markers,
+        {
+          coordinate: e.nativeEvent.coordinate,
+          key: id++,
+        }
+      ]
+    })
+  }
+
   render() {
     return (
       <View style={Style.container}>
@@ -41,7 +58,15 @@ class Mappyr extends Component {
           showsUserLocation
           followsUserLocation
           showsMyLocationButton
-        />
+          onPress={(e) => this.onMapPress(e)}
+        >
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              key={marker.key}
+              coordinate={marker.coordinate}
+            />
+          ))}
+        </MapView>
       </View>
     );
   }
