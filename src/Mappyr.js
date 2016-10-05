@@ -39,7 +39,7 @@ class Mappyr extends Component {
   //   navigator.geolocation.clearWatch(this.watchID);
   // }
 
-  onMapPress(e) {
+  onMapPress = (e) => {
     this.setState({
       markers: [
         ...this.state.markers,
@@ -49,7 +49,19 @@ class Mappyr extends Component {
         }
       ]
     })
-  }
+  };
+
+  onMarkerPress = (e) => {
+    e.persist()
+
+    const c = e.nativeEvent.coordinate
+    const markers = this.state.markers.filter(
+      (x) => (
+        ! (x.coordinate.latitude  == c.latitude &&
+           x.coordinate.longitude == c.longitude)))
+
+    this.setState({ markers })
+  };
 
   render() {
     return (
@@ -58,19 +70,20 @@ class Mappyr extends Component {
           showsUserLocation
           followsUserLocation
           showsMyLocationButton
-          onPress={(e) => this.onMapPress(e)}
+          onPress={this.onMapPress}
         >
           {this.state.markers.map(marker => (
             <MapView.Marker
               key={marker.key}
               coordinate={marker.coordinate}
+              onPress={this.onMarkerPress}
             />
           ))}
         </MapView>
       </View>
     );
-  }
-}
+  };
+};
 
 
 AppRegistry.registerComponent('Mappyr', () => Mappyr);
