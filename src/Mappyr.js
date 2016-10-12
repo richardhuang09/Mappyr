@@ -13,35 +13,41 @@ let id = 0;
 
 class Mappyr extends Component {
   state = {
-    initialPosition: { latitude: 0, longitude: 0},
-    lastPosition: { latitude: 0, longitude: 0},
+    initialPosition: { latitude: 0, longitude: 0, latitudeDelta: 0, longitudeDelta: 0},
+    lastPosition: { latitude: 0, longitude: 0, latitudeDelta: 0, longitudeDelta: 0},
     markers: [],
   };
 
   watchID: ?number = null;
 
   componentWillMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = position.coords;
+        initialPosition.latitudeDelta = 0.0922,
+        initialPosition.longitudeDelta = 0.0421,
+        this.setState({initialPosition});
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lastPosition = position.coords;
+      lastPosition.latitudeDelta = 0.0922,
+      lastPosition.longitudeDelta = 0.0421,
+      this.setState({lastPosition});
+    });
+  }
+
+  componentWillUpdateProps() {
   }
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
   constructor() {
-    super()
-    this.markers = {}
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var initialPosition = position.coords;
-        this.setState({initialPosition});
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = position.coords;
-      this.setState({lastPosition});
-    });
+    super();
+    this.markers = {};
   }
 
   onMapPress = (e) => {
@@ -59,18 +65,18 @@ class Mappyr extends Component {
         }
       ]
     })
-  };
+  }
 
   onMarkerPress = (e) => {
-    e.persist()
-    console.log("marker_pressed")
-    const c = e.nativeEvent.coordinate
+    e.persist();
+    console.log("marker_pressed");
+    const c = e.nativeEvent.coordinate;
     const markers = this.state.markers.filter(
       (x) => (
         ! (x.coordinate.latitude  == c.latitude &&
-           x.coordinate.longitude == c.longitude)))
+           x.coordinate.longitude == c.longitude)));
 
-    this.setState({ markers })
+    this.setState({ markers });
   };
 
   render() {
@@ -80,9 +86,11 @@ class Mappyr extends Component {
           showsUserLocation
           followsUserLocation
           showsMyLocationButton
+          region={this.state.lastPosition}
+          onRegionChange={(lastPosition) => this.setState({ lastPosition })}
           initialRegion={{
-            latitude: this.state.lastPosition.latitude,
-            longitude: this.state.lastPosition.longitude,
+            latitude: this.state.initialPosition.latitude,
+            longitude: this.state.initialPosition.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
