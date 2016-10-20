@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 import { StyleSheet } from 'react-native';
 
 const Style = StyleSheet.create({

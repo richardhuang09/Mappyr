@@ -1,30 +1,29 @@
 
 import React, { PropTypes } from 'react';
 import {
-  StyleSheet,
   View,
+  TouchableHighlight,
+  Text,
 } from 'react-native';
 import Style from './Style';
 
+export default class CustomCallout extends React.Component {
+  propTypes = {
+    children: PropTypes.node.isRequired,
+  }
 
-const propTypes = {
-  children: PropTypes.node.isRequired,
-  style: PropTypes.object,
-};
-
-class CustomCallout extends React.Component {
   render() {
     return (
       <View>
         <View style={Style.bubble}>
           <View style={Style.amount}>
             {this.props.children}
+            <TouchableHighlight onPress={this.props.onForward}>
+              <Text>Tap me to load the next scene</Text>
+            </TouchableHighlight>
           </View>
         </View>
       </View>
     );
   }
 }
-
-CustomCallout.propTypes = propTypes;
-export default CustomCallout;

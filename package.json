@@ -9,5 +9,14 @@
     "react": "15.3.2",
     "react-native": "0.34.1",
     "react-native-maps": "^0.8.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "eslint-plugin-react-native": "^2.0.0"
   }
 }
