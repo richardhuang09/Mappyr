@@ -8,8 +8,9 @@ import {
 import Style from './Style';
 
 export default class CustomCallout extends React.Component {
-  propTypes = {
+  static propTypes = {
     children: PropTypes.node.isRequired,
+    onForward: PropTypes.func.isRequired,
   }
 
   render() {

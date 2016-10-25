@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, Text, View } from 'react-native';
+import { AppRegistry, Navigator } from 'react-native';
 
 import Map from './Map';
 import CreatePost from './CreatePost';
