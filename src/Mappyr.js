@@ -36,5 +36,3 @@ class Mappyr extends Component {
     );
   }
 }
-
-AppRegistry.registerComponent('Mappyr', () => Mappyr);
