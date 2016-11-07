@@ -7,9 +7,10 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import Style from '../Style';
-import CustomCallout from '../CustomCallout';
+import CustomCallout from './CustomCallout';
 import * as locationActions from '../actions/location';
 import * as markerActions from '../actions/markers';
+import * as navigatorActions from '../actions/navigator';
 import * as mapConstants from '../constants/MapConstants';
 
 const STORAGE_KEY = 'lastSessionLocation';
@@ -58,14 +59,14 @@ class Map extends Component {
   }
 
   onMarkerPress = (e) => {
-    e.persist();
-    const c = e.nativeEvent.coordinate;
-    const markers = this.state.markers.filter(
-      x => (
-        !(x.coordinate.latitude === c.latitude &&
-           x.coordinate.longitude === c.longitude)));
-
-    this.setState({ markers });
+    // e.persist();
+    // const c = e.nativeEvent.coordinate;
+    // const markers = this.state.markers.filter(
+    //   x => (
+    //     !(x.coordinate.latitude === c.latitude &&
+    //        x.coordinate.longitude === c.longitude)));
+    //
+    // this.setState({ markers });
   };
 
   _loadInitialState = async () => {
@@ -104,7 +105,9 @@ class Map extends Component {
                 tooltip
                 style={Style.mapViewCallout}
               >
-                <CustomCallout>
+                <CustomCallout
+                  onForward={this.props.openCreatePost}
+                >
                   <Text>Callout</Text>
                   <Text>({marker.upvotes}-{marker.downvotes})</Text>
                 </CustomCallout>
@@ -133,6 +136,10 @@ function mapDispatchToProps(dispatch) {
     },
     addMarker: (text, coordinate) => {
       dispatch(markerActions.addMarker(text, coordinate));
+    },
+    openCreatePost: () => {
+      console.log('create_post')
+      dispatch(navigatorActions.navigatePush('Create Post'));
     },
   };
 }

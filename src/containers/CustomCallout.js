@@ -5,7 +5,7 @@ import {
   TouchableHighlight,
   Text,
 } from 'react-native';
-import Style from './Style';
+import Style from '../Style';
 
 export default class CustomCallout extends Component {
   static propTypes = {

@@ -50,7 +50,7 @@ class App extends Component {
     switch (route.key) {
       case 'The Map':
         return <Map />;
-      case 'CreatePost':
+      case 'Create Post':
         return <CreatePost />;
       default:
         return null;
